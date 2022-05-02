@@ -12,8 +12,6 @@ class infoWeather{
         curl_setopt($curl,CURLOPT_RETURNTRANSFER,1);
         $info=json_decode(curl_exec($curl),1);
         curl_close($curl);
-        echo '<pre>';
-        var_dump($info);
         $data=[
             'lat'=>$info[0]['lat'],
             'lon'=>$info[0]['lon']
@@ -56,4 +54,27 @@ class infoWeather{
     }
 }
 
+$cities=[
+    'Москва'=>'Moscow',
+    'Санкт-Петербург'=>'Saint Petersburg',
+    'Казань'=>'Kazan',
+    'Новосибирск'=>'Novosibirsk',
+    'Владивосток'=>'Vladivostok'
+];
+
+$key=$_POST['city'];
+
+$city=$cities[$key];
+
+$api='2bd9390e4bf7249c2e9320671ea33b65';
+
+$weather=new infoWeather($api,$city);
+
+$result=$weather->mainInfo();
+
+echo  'Погода в городе '.$key.' '.$result['description'].'</br>';
+
+echo 'Температура '.$result['temp'].' градусов цельсия ощущается как '.$result['feel'].'</br>';
+
+echo 'Скорость ветра:'.$result['wind'].' м/с';
 ?>
